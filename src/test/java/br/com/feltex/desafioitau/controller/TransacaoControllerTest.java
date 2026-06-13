@@ -31,7 +31,7 @@ class TransacaoControllerTest {
 
     @Test
     @DisplayName("POST /transacao creates an transaction")
-    void save_CreatesAnime_WhenSuccessful() throws Exception {
+    void save_CreatesTransaction_WhenSuccessful() throws Exception {
         var request = fileUtils.readResourceFile("transacao/post-request-transaction-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -43,5 +43,18 @@ class TransacaoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         BDDMockito.verify(service).save(any(Transacao.class));
+    }
+
+    @Test
+    @DisplayName("DELETE /transacao creates an transaction")
+    void clearTransactions_DeleteAllTransactions_WhenSuccessful() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete(URL)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        BDDMockito.verify(service).clean();
     }
 }

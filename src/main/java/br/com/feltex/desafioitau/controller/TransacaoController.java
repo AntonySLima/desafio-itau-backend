@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/transacao")
@@ -24,8 +21,16 @@ public class TransacaoController {
 
     @PostMapping
     public ResponseEntity<Void> saveTransaction(@RequestBody @Valid TransacaoPostRequest request) {
+        log.info("Requesting to save transaction: {}", request);
         Transacao transaction = mapper.toTransaction(request);
         service.save(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> clearTransactions(){
+        log.info("Requesting to clear all transactions");
+        service.clean();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -30,4 +30,17 @@ class TransacaoRepositoryTest {
                 .assertThat(repository.getTransacoes())
                 .contains(transactionToSave);
     }
+
+    @Test
+    @DisplayName("limpar deletes all transactions when successful")
+    void limpar_DeleteAllTransactions_WhenSuccessful() {
+        Transacao transactionToSave = Transacao.builder().valor(BigDecimal.valueOf(30.00D)).dataHora(OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC)).build();
+
+        repository.save(transactionToSave);
+        repository.limpar();
+
+        Assertions
+                .assertThat(repository.getTransacoes())
+                .isEmpty();
+    }
 }
